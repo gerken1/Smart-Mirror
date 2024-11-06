@@ -28,9 +28,9 @@ news_country_code = 'us'
 
 # Weather and Location API info
 temperature_units = 'imperial'
-weather_api_token = '98fc8b8f5859f7c76cbf8bdc3f2c524b'  # create account at https://api.openweathermap.org
-weather_lang = 'en'  # see https://api.openweathermap.org/data/2.5/weather for full list of language parameters values
-weather_unit = 'us'  # see https://api.openweathermap.org/data/2.5/weather for full list of unit parameters values
+weather_api_token = ''  # create account at https://api.openweathermap.org
+weather_lang = 'en'  # see https://api.openweathermap.org/data/3.0/weather for full list of language parameters values
+weather_unit = 'us'  # see https://api.openweathermap.org/data/3.0/weather for full list of unit parameters values
 latitude = "27.976287"  # Used for getting location and weather, see https://geocode.xyz/api#python for location API info
 longitude = "-82.535637"  # Used for getting location and weather, see https://geocode.xyz/api#python for location API info
 
@@ -45,7 +45,7 @@ def setlocale(name):  # thread proof function to work with locale
             locale.setlocale(locale.LC_ALL, saved)
 
 
-# icon lookup for using https://api.openweathermap.org/data/2.5/weather
+# icon lookup for using https://api.openweathermap.org/data/3.0/weather
 icon_lookup = {
     '01d': "assets/Sun.png",  # clear sky day
     '01n': "assets/Moon.png",  # clear sky night
@@ -152,7 +152,7 @@ class Weather(Frame):
 
     def get_weather(self):
         try:
-            weather_req_url = "https://api.openweathermap.org/data/2.5/onecall?lat=%s&lon=%s&exclude=minutely,hourly&units=%s&appid=%s" % (
+            weather_req_url = "https://api.openweathermap.org/data/3.0/onecall?lat=%s&lon=%s&exclude=minutely,hourly&units=%s&appid=%s" % (
                 latitude, longitude, temperature_units, weather_api_token)
 
             r = requests.get(weather_req_url)
@@ -225,7 +225,7 @@ class Weather(Frame):
             traceback.print_exc()
             print("Error: %s. Cannot get weather." % e)
 
-        self.after(1200000, self.get_weather)  # Rate limit - 20 mins
+        self.after(600000, self.get_weather)  # Rate limit - 10 mins
 
     @staticmethod
     def convert_kelvin_to_fahrenheit(kelvin_temp):
